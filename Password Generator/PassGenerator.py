@@ -5,30 +5,30 @@ PassList=[]
 
 #Its kinda like a zip bomb soo dont use to much for's
 
-for i in SymbolList:
+for element in SymbolList:
 
-    Pass=i
+    Pass=element
     PassList.append(Pass)
 
-    for i in SymbolList:
+    for element in SymbolList:
 
-        Pass2=Pass+i
+        Pass2=Pass+element
         PassList.append(Pass2)
 
-        for i in SymbolList:
+        for element in SymbolList:
 
-            Pass3=Pass2+i
+            Pass3=Pass2+element
             PassList.append(Pass3)
 
-            #for i in SymbolList:
-                #Pass4=Pass3+i
+            #for element in SymbolList:
+                #Pass4=Pass3+element
                 #PassList.append(Pass4)
             
-                #for i in SymbolList:
-                    #Pass5=Pass4+i
+                #for element in SymbolList:
+                    #Pass5=Pass4+element
                     #PassList.append(Pass4)
 
 file = open("./Pass.txt", 'w')
 
-for i in PassList:
-    file.write(i+"\n")
+for element in PassList:
+    file.write(element+"\n")
