@@ -1,7 +1,8 @@
 from string import *
 
 SymbolList = ascii_letters + digits + punctuation
-file = open("./Pass.txt", 'w')
+file = open("./Password Generator/Pass.txt", 'w')
+
 #Its kinda like a zip bomb soo dont use to much for's
 
 for element in SymbolList: #282B
