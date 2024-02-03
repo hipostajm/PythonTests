@@ -1,34 +1,33 @@
 from string import *
 
 SymbolList = ascii_letters + digits + punctuation
-PassList=[]
-
+file = open("./Pass.txt", 'w')
 #Its kinda like a zip bomb soo dont use to much for's
 
 for element in SymbolList:
 
     Pass=element
-    PassList.append(Pass)
+
+    file.write(Pass+"\n")
 
     for element in SymbolList:
 
         Pass2=Pass+element
-        PassList.append(Pass2)
+
+        file.write(Pass2+"\n")
 
         for element in SymbolList:
 
             Pass3=Pass2+element
-            PassList.append(Pass3)
 
-            #for element in SymbolList:
-                #Pass4=Pass3+element
-                #PassList.append(Pass4)
+            file.write(Pass3+"\n")
+
+            for element in SymbolList:
+                Pass4=Pass3+element
+
+                file.write(Pass4+"\n")
             
-                #for element in SymbolList:
-                    #Pass5=Pass4+element
-                    #PassList.append(Pass4)
+                for element in SymbolList:
+                    Pass5=Pass4+element
 
-file = open("./Pass.txt", 'w')
-
-for element in PassList:
-    file.write(element+"\n")
+                    file.write(Pass5+"\n")
