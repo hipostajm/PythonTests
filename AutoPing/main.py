@@ -17,7 +17,8 @@ cur.execute(
             , Status TEXT
     )
 """)
-cur.execute("""
+cur.execute(
+"""
     Create table if not exists Ports(
             id INTEGER Primary key autoincrement
             , Port TEXT
@@ -36,10 +37,26 @@ for i in range(0,255):
         r = "Good"
     elif r == False:
         r = "No Response"
-    elif not r:
+    else:
         r = "Time out"
 
     cur.execute("Insert into IPs (IP, Status) values (?,?)",(ip,r))
     con.commit()
+IpList = con.execute("""Select IP from IPs where Status = "Good";""").fetchall()
+
+for i in IpList:
+    ip = i[0]
+    for port in range(1,65535):
+        r = ping(f"{ip}:{port}")
+
+        if type(r) == float:
+            r = "Good"
+        elif r == False:
+            r = "No Response"
+        else:
+            r = "Time out"
+
+        cur.execute("Insert into Ports (Port, Status) values (?,?)",(port,r))
+        con.commit()
 
 con.close
