@@ -27,8 +27,7 @@ cur.execute("""
 
 for i in range(0,255):
 
-    ip='192.168.88.'
-    ip+=str(i)
+    ip=f'192.168.88.{i}'
     r = ping(ip)
 
     print(ip,' ',r)
@@ -40,7 +39,7 @@ for i in range(0,255):
     elif not r:
         r = "Time out"
 
-    cur.execute("Insert into IPs (IP, Status) values (?,?)",[ip,str(r)])
+    cur.execute("Insert into IPs (IP, Status) values (?,?)",{ip,r})
     con.commit()
 
 con.close
