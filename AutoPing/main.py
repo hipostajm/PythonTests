@@ -39,7 +39,7 @@ for i in range(0,255):
     elif not r:
         r = "Time out"
 
-    cur.execute("Insert into IPs (IP, Status) values (?,?)",[ip,r])
+    cur.execute("Insert into IPs (IP, Status) values (?,?)",(ip,r))
     con.commit()
 
 con.close
