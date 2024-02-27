@@ -32,10 +32,11 @@ for i in range(0,255):
     print(ip,' ',r)
 
     if type(r) == float:
+        r = "Good"
+    elif r == False:
+        r = "No Response"
+    elif not r:
+        r = "Time out"
 
-        r = "Is Good"
-
-        cur.execute("Insert into IPs (IP, Status) values (?,?)",[ip,str(r)])
-        con.commit()
-    else:
-        pass
+    cur.execute("Insert into IPs (IP, Status) values (?,?)",[ip,str(r)])
+    con.commit()
