@@ -9,7 +9,8 @@ cur.execute('Drop table if exists IPs')
 
 cur.execute('Drop table if exists Ports')
 
-cur.execute("""
+cur.execute(
+"""
     Create table if not exists IPs(
             id INTEGER Primary key autoincrement
             , IP TEXT
@@ -23,6 +24,7 @@ cur.execute("""
             , Status TEXT
     )
 """)
+
 for i in range(0,255):
 
     ip='192.168.88.'
@@ -40,3 +42,5 @@ for i in range(0,255):
 
     cur.execute("Insert into IPs (IP, Status) values (?,?)",[ip,str(r)])
     con.commit()
+
+con.close
