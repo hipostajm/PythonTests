@@ -17,18 +17,18 @@ cur.execute(
             , Status TEXT
     )
 """)
-cur.execute(
-"""
-    Create table if not exists Ports(
-            id INTEGER Primary key autoincrement
-            , Port TEXT
-            , Status TEXT
-    )
-""")
+# cur.execute(
+# """
+#     Create table if not exists Ports(
+#             id INTEGER Primary key autoincrement
+#             , Port TEXT
+#             , Status TEXT
+#     )
+# """)
 
 for i in range(0,255):
 
-    ip=f'192.168.88.{i}'
+    ip=f'192.168.1.{i}'
     r = ping(ip)
 
     print(ip,' ',r)
@@ -42,21 +42,23 @@ for i in range(0,255):
 
     cur.execute("Insert into IPs (IP, Status) values (?,?)",(ip,r))
     con.commit()
-IpList = con.execute("""Select IP from IPs where Status = "Good";""").fetchall()
+# IpList = con.execute("""Select IP from IPs where Status = "Good";""").fetchall()
 
-for i in IpList:
-    ip = i[0]
-    for port in range(1,65535):
-        r = ping(f"{ip}:{port}")
+# for i in IpList:
+#     ip = i[0]
+#     for port in range(1,65535):
+#         r = ping(f"{ip}:{port}")
 
-        if type(r) == float:
-            r = "Good"
-        elif r == False:
-            r = "No Response"
-        else:
-            r = "Time out"
+#         if type(r) == float:
+#             r = "Good"
+#         elif r == False:
+#             r = "No Response"
+#         else:
+#             r = "Time out"
 
-        cur.execute("Insert into Ports (Port, Status) values (?,?)",(port,r))
-        con.commit()
+#         print(ip,' ',r)
+
+#         cur.execute("Insert into Ports (Port, Status) values (?,?)",(port,r))
+#         con.commit()
 
 con.close
