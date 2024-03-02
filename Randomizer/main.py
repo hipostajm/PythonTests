@@ -1,6 +1,6 @@
 import random
 
-file = open("./Randomizer/Changed.txt", 'a')
+open("./Randomizer/Changed.txt", 'a')
 
 file0 = open("./Randomizer/Text.txt", 'r')
 file1 = open("./Randomizer/Changed.txt", 'w')
