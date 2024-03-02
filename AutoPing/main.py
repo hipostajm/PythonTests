@@ -1,3 +1,6 @@
+#Simple lan ip scan with DB
+
+
 import sqlite3
 from ping3 import ping, verbose_ping
 import nmap

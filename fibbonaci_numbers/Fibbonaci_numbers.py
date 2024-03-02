@@ -1,3 +1,6 @@
+#Simple fibboncia numbers/phi generator
+
+
 num_list = []
 
 que = int(input("How many fibbonaci numbers: "))

@@ -1,3 +1,6 @@
+#Simple symbols combination generator
+
+
 from string import *
 
 SymbolList = ascii_letters + digits + punctuation

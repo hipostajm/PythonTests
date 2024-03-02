@@ -1,3 +1,6 @@
+#Simple text randomizer
+
+
 import random
 
 open("./Randomizer/Changed.txt", 'a')
