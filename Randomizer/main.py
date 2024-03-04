@@ -1,7 +1,7 @@
 #Simple text randomizer
 
 
-import random
+from random import randint
 
 open("./Randomizer/Changed.txt", 'a')
 
@@ -11,6 +11,6 @@ file1 = open("./Randomizer/Changed.txt", 'w')
 file0 = file0.read().split()
 
 while file0:
-    a = random.randint(0,len(file0)-1)
+    a = randint(0,len(file0)-1)
     file1.write(f"{file0[a]} ")
     del file0[a]
