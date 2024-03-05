@@ -3,9 +3,6 @@
 
 import sqlite3
 from ping3 import ping
-import nmap
-
-nm = nmap.PortScanner()
 
 con = sqlite3.connect("./AutoPing/AutoPing.db")
 
@@ -35,7 +32,7 @@ cur.execute(
 
 for i in range(0,255):
 
-    ip=f'192.168.88.{i}'
+    ip=f'192.168.1.{i}'
     r = ping(ip)
 
     if type(r) == float:
@@ -45,7 +42,7 @@ for i in range(0,255):
     else:
         r = "Time out"
 
-    print(ip,' ',r)
+    print(ip,' | ',r)
 
     cur.execute("Insert into IPs (IP, Status) values (?,?)",(ip,r))
     con.commit()
