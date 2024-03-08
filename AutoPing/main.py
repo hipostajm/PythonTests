@@ -1,82 +1,78 @@
-#Simple lan ip scan with DB
-
 import threading
 import sqlite3
 from ping3 import ping
 
+# Establish connection to SQLite database
 con = sqlite3.connect("./AutoPing/AutoPing.db")
-
 cur = con.cursor()
 
-cur.execute('Drop table if exists IPs')
+# Drop existing tables if they exist
+cur.execute('DROP TABLE IF EXISTS IPs')
+cur.execute('DROP TABLE IF EXISTS Ports')
 
-cur.execute('Drop table if exists Ports')
-
-cur.execute(
-"""
-    Create table if not exists IPs(
-            id INTEGER Primary key autoincrement
-            , IP TEXT
-            , Status TEXT
+# Create 'IPs' table if it does not exist
+cur.execute("""
+    CREATE TABLE IF NOT EXISTS IPs(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            IP TEXT,
+            Status TEXT
     )
 """)
-# cur.execute(
-# """
-#     Create table if not exists Ports(
-#             id INTEGER Primary key autoincrement
-#             , Port TEXT
-#             , IP TEXTs
-#             , Status TEXT
-#     )
-# """)
 
+# IP base for scanning
 ip_base = '192.168.1.'
 
-threads_number = 85 #use only 1, 3, 5, 15, 17, 51, 85, 255
-thread_divider = int(255/threads_number)
+# Number of threads to use for scanning
+threads_number = 85  # Use only 1, 3, 5, 15, 17, 51, 85, 255
+thread_divider = int(255 / threads_number)
 
+# Dictionary to store IP statuses after scanning
 ip_list = {}
 
-def Scan(From,To):
-    for i in range(From,To):
+# Function to scan IP addresses
+def scan(from_ip, to_ip):
+    for i in range(from_ip, to_ip):
+        ip = f'{ip_base}{i}'
+        response = ping(ip)
 
-        ip=f'{ip_base}{i}'
-        r = ping(ip)
-
-        if type(r) == float:
-            r = "Good"
-        elif r == False:
-            r = "No Response"
+        if type(response) == float:
+            status = "Good"
+        elif response is False:
+            status = "No Response"
         else:
-            r = "Time out"
+            status = "Time out"
 
-        ip_list[ip]=r
+        ip_list[ip] = status
+        print(f"{ip} | {status}")
 
-        print(f"{ip} | {r}")
-
+# Initialize variables for thread creation
 check = 0
 threads = []
 
+# Create threads for scanning IP addresses
 for i in range(threads_number):
     if check == 0:
-        thread = threading.Thread(target=Scan, args=(1,thread_divider))
+        thread = threading.Thread(target=scan, args=(1, thread_divider))
     else:
-        thread = threading.Thread(target=Scan, args=(thread_divider*i,thread_divider*(i+1)))
+        thread = threading.Thread(target=scan, args=(thread_divider * i, thread_divider * (i + 1)))
     check += 1
     threads.append(thread)
 
-Scan(255,256)
+# Scan the last remaining IPs not covered by threads
+scan(255, 256)
 
+# Start all threads for IP scanning
 for thread in threads:
     thread.start()
 
+# Wait for all threads to complete
 for thread in threads:
     thread.join()
 
-    
-
-for i in ip_list:
-    cur.execute("Insert into IPs (IP, Status) values (?,?)",(i,ip_list[i]))
+# Insert IP scan results into the database
+for ip, status in ip_list.items():
+    cur.execute("INSERT INTO IPs (IP, Status) VALUES (?, ?)", (ip, status))
     con.commit()
 
-con.close
+# Close database connection
+con.close()
