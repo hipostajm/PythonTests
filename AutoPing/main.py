@@ -40,7 +40,7 @@ ip_list = {}
 def Scan(from_ip,to_ip):
     for i in range(from_ip,to_ip):
 
-        ip=ip_base+i
+        ip=ip_base+str(i)
         r = ping(ip)
 
         if type(r) == float:
