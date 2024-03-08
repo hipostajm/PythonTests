@@ -32,7 +32,7 @@ cur.execute(
 
 ip_base = '192.168.1.'
 
-threads_number = 255 #use only 1, 3, 5, 15, 17, 51, 85, 255
+threads_number = 85 #use only 1, 3, 5, 15, 17, 51, 85, 255
 thread_divider = int(255/threads_number)
 
 ip_list = {}
@@ -55,7 +55,6 @@ def Scan(From,To):
         print(f"{ip} | {r}")
 
 check = 0
-
 threads = []
 
 for i in range(threads_number):
@@ -73,6 +72,8 @@ for thread in threads:
 
 for thread in threads:
     thread.join()
+
+    
 
 for i in ip_list:
     cur.execute("Insert into IPs (IP, Status) values (?,?)",(i,ip_list[i]))
