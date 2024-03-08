@@ -37,10 +37,10 @@ thread_divider = int(255/threads_number)
 
 ip_list = {}
 
-def Scan(From,To):
-    for i in range(From,To):
+def Scan(from_ip,to_ip):
+    for i in range(from_ip,to_ip):
 
-        ip=f'{ip_base}{i}'
+        ip=ip_base+i
         r = ping(ip)
 
         if type(r) == float:
@@ -73,7 +73,7 @@ for thread in threads:
 for thread in threads:
     thread.join()
 
-    
+
 
 for i in ip_list:
     cur.execute("Insert into IPs (IP, Status) values (?,?)",(i,ip_list[i]))
