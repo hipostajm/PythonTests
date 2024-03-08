@@ -32,11 +32,10 @@ cur.execute(
 
 ip_base = '192.168.1.'
 
-threads_number = 51 #use only 1, 3, 5, 15, 17, 51, 85, 255
+threads_number = 255 #use only 1, 3, 5, 15, 17, 51, 85, 255
 thread_divider = int(255/threads_number)
 
-ip_list = []
-response_list = []
+ip_list = {}
 
 def Scan(From,To):
     for i in range(From,To):
@@ -51,8 +50,7 @@ def Scan(From,To):
         else:
             r = "Time out"
 
-        ip_list.append(ip)
-        response_list.append(r)
+        ip_list[ip]=r
 
         print(f"{ip} | {r}")
 
@@ -76,8 +74,8 @@ for thread in threads:
 for thread in threads:
     thread.join()
 
-for i in range(255):
-    cur.execute("Insert into IPs (IP, Status) values (?,?)",(ip_list[i],response_list[i]))
+for i in ip_list:
+    cur.execute("Insert into IPs (IP, Status) values (?,?)",(i,ip_list[i]))
     con.commit()
 
 con.close
