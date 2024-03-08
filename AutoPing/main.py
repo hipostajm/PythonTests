@@ -1,6 +1,6 @@
 #Simple lan ip scan with DB
 
-
+import threading
 import sqlite3
 from ping3 import ping
 
@@ -30,35 +30,54 @@ cur.execute(
 #     )
 # """)
 
-for i in range(0,255):
+ip_base = '192.168.1.'
 
-    ip=f'192.168.1.{i}'
-    r = ping(ip)
+threads_number = 51 #use only 1, 3, 5, 15, 17, 51, 85, 255
+thread_divider = int(255/threads_number)
 
-    if type(r) == float:
-        r = "Good"
-    elif r == False:
-        r = "No Response"
+ip_list = []
+response_list = []
+
+def Scan(From,To):
+    for i in range(From,To):
+
+        ip=f'{ip_base}{i}'
+        r = ping(ip)
+
+        if type(r) == float:
+            r = "Good"
+        elif r == False:
+            r = "No Response"
+        else:
+            r = "Time out"
+
+        ip_list.append(ip)
+        response_list.append(r)
+
+        print(f"{ip} | {r}")
+
+check = 0
+
+threads = []
+
+for i in range(threads_number):
+    if check == 0:
+        thread = threading.Thread(target=Scan, args=(1,thread_divider))
     else:
-        r = "Time out"
+        thread = threading.Thread(target=Scan, args=(thread_divider*i,thread_divider*(i+1)))
+    check += 1
+    threads.append(thread)
 
-    print(ip,' | ',r)
+Scan(255,256)
 
-    cur.execute("Insert into IPs (IP, Status) values (?,?)",(ip,r))
+for thread in threads:
+    thread.start()
+
+for thread in threads:
+    thread.join()
+
+for i in range(255):
+    cur.execute("Insert into IPs (IP, Status) values (?,?)",(ip_list[i],response_list[i]))
     con.commit()
-# IpList = con.execute("""Select IP from IPs where Status = "Good";""").fetchall()
-
-# for i in IpList:
-#     ip = i[0]
-#     for port in range(1,65535):
-
-#         nm[ip]['tcp'][port]['state']
-
-#         if r == True:
-#             r = 'Good'
-#             cur.execute("Insert into Ports (Port, IP ,Status) values (?,?,?)",(port,ip,r))
-#             con.commit()
-#         else:
-#             pass
 
 con.close
