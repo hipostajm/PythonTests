@@ -12,7 +12,7 @@ threads_number = 85 #use only 1, 3, 5, 15, 17, 51, 85, 255
 thread_divider = int(255/threads_number)
 
 
-def Scan(from_ip,to_ip):
+def ScanTxT(from_ip,to_ip):
     for i in range(from_ip,to_ip):
 
         ip=ip_base+str(i)
@@ -36,13 +36,13 @@ threads = []
 
 for i in range(threads_number):
     if check == 0:
-        thread = threading.Thread(target=Scan, args=(1,thread_divider))
+        thread = threading.Thread(target=ScanTxT, args=(1,thread_divider))
     else:
-        thread = threading.Thread(target=Scan, args=(thread_divider*i,thread_divider*(i+1)))
+        thread = threading.Thread(target=ScanTxT, args=(thread_divider*i,thread_divider*(i+1)))
     check += 1
     threads.append(thread)
 
-Scan(255,256)
+ScanTxT(255,256)
 
 for thread in threads:
     thread.start()
