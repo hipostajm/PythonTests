@@ -1,32 +1,16 @@
 #Simple lan ip scan with DB
 
 import threading
-import sqlite3
 from ping3 import ping
 
-con = sqlite3.connect("./AutoPing/AutoPing.db")
-
-cur = con.cursor()
-
-cur.execute('Drop table if exists IPs')
-
-cur.execute('Drop table if exists Ports')
-
-cur.execute(
-"""
-    Create table if not exists IPs(
-            id INTEGER Primary key autoincrement
-            , IP TEXT
-            , Status TEXT
-    )
-""")
-
+open("./AutoPing/Ips.txt", 'a')
+file = open("./AutoPing/Ips.txt", 'w')
 
 ip_base = '192.168.1.'
-ip_list = {}
 
 threads_number = 85 #use only 1, 3, 5, 15, 17, 51, 85, 255
 thread_divider = int(255/threads_number)
+
 
 def Scan(from_ip,to_ip):
     for i in range(from_ip,to_ip):
@@ -41,9 +25,11 @@ def Scan(from_ip,to_ip):
         else:
             r = "Time out"
 
-        ip_list[ip]=r
+        added = f"{ip} | {r}"
 
-        print(f"{ip} | {r}")
+        print(added)
+        file.write(f'{added}\n')
+
 
 check = 0
 threads = []
@@ -63,11 +49,3 @@ for thread in threads:
 
 for thread in threads:
     thread.join()
-
-
-
-for i in ip_list:
-    cur.execute("Insert into IPs (IP, Status) values (?,?)",(i,ip_list[i]))
-    con.commit()
-
-con.close
