@@ -1,4 +1,4 @@
-#Simple lan ip scan with DB
+#Simple lan ip scan with txt
 
 import threading
 from ping3 import ping
