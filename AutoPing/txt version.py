@@ -11,7 +11,7 @@ ip_base = '192.168.1.'
 threads_number = 85 #use only 1, 3, 5, 15, 17, 51, 85, 255
 thread_divider = int(255/threads_number)
 
-
+    
 def ScanTxT(from_ip,to_ip):
     for i in range(from_ip,to_ip):
 
