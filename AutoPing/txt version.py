@@ -4,7 +4,10 @@ import threading
 from ping3 import ping
 
 open("./AutoPing/Ips.txt", 'a')
-file = open("./AutoPing/Ips.txt", 'w')
+try:
+    file = open("./AutoPing/Ips.txt", 'w')
+except:
+    file = open('./Ips.txt','w')
 
 ip_base = '192.168.1.'
 

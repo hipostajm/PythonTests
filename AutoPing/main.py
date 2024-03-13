@@ -4,7 +4,10 @@ import threading
 import sqlite3
 from ping3 import ping
 
-con = sqlite3.connect("./AutoPing/AutoPing.db")
+try:
+    con = sqlite3.connect("./AutoPing/AutoPing.db")
+except:
+    con = sqlite3.connect("./AutoPing.db")
 
 cur = con.cursor()
 
