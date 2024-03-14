@@ -59,7 +59,7 @@ for i in range(threads_number):
     check += 1
     threads.append(thread)
 
-if threads_number == 1 or 3 or 5 or 15 or 17 or 51 or 85 or 255:
+if threads_number != 1 or 3 or 5 or 15 or 17 or 51 or 85 or 255:
     thread = threading.Thread(target=Scan, args=((int(255/threads_number)*threads_number), 256))
     threads.append(thread)
 
