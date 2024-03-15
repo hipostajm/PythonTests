@@ -11,7 +11,7 @@ except:
 
 ip_base = '192.168.1.'
 
-threads_number = 85 #use only 1, 3, 5, 15, 17, 51, 85, 255
+threads_number = 120 #its better to use only but you dont need to (it will be slower) 1, 3, 5, 15, 17, 51, 85, 255
 thread_divider = int(255/threads_number)
 
     
@@ -45,7 +45,9 @@ for i in range(threads_number):
     check += 1
     threads.append(thread)
 
-ScanTxT(255,256)
+if threads_number != 1 or 3 or 5 or 15 or 17 or 51 or 85 or 255:
+    thread = threading.Thread(target=ScanTxT, args=((int(255/threads_number)*threads_number), 256))
+    threads.append(thread)
 
 for thread in threads:
     thread.start()
