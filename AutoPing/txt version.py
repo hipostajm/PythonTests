@@ -2,6 +2,7 @@
 
 import threading
 from ping3 import ping
+import socket
 
 open("./AutoPing/Ips.txt", 'a')
 try:
@@ -9,7 +10,20 @@ try:
 except:
     file = open('./Ips.txt','w')
 
-ip_base = '192.168.1.'
+def get_local_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(('192.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
+ 
+local_ip = get_local_ip().split('.')
+
+ip_base = f"{local_ip[0]}.{local_ip[1]}.{local_ip[2]}."
 
 threads_number = 120 #its better to use only but you dont need to (it will be slower) 1, 3, 5, 15, 17, 51, 85, 255
 thread_divider = int(255/threads_number)

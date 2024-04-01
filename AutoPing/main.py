@@ -3,6 +3,7 @@
 import threading
 import sqlite3
 from ping3 import ping
+import socket
 
 try:
     con = sqlite3.connect("./AutoPing/AutoPing.db")
@@ -24,8 +25,20 @@ cur.execute(
     )
 """)
 
+def get_local_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(('192.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
+ 
+local_ip = get_local_ip().split('.')
 
-ip_base = '192.168.1.'
+ip_base = f"{local_ip[0]}.{local_ip[1]}.{local_ip[2]}."
 ip_list = {}
 
 threads_number = 255 #its better to use only but you dont need to (it will be slower) 1, 3, 5, 15, 17, 51, 85, 255
