@@ -25,7 +25,7 @@ def get_local_ip():
 
 local_ip = get_local_ip().split(".")
 
-ip_base = f"{local_ip[0]}.{local_ip[1]}.{local_ip[2]}."
+ip_base = f"{local_ip[0]}.{local_ip[1]}."
 
 threads_number = 255  # its better to use only but you dont have to (it will be slower) 1, 3, 5, 15, 17, 51, 85, 255
 thread_divider = int(255 / threads_number)
@@ -33,21 +33,22 @@ thread_divider = int(255 / threads_number)
 
 def ScanTxT(from_ip, to_ip):
     for i in range(from_ip, to_ip):
+        for i2 in range(1, 256):
 
-        ip = ip_base + str(i)
-        r = ping(ip)
+            ip = f"{ip_base}{i}.{i2}"
+            r = ping(ip)
 
-        if type(r) == float:
-            r = "Good"
-        elif r == False:
-            r = "No Response"
-        else:
-            r = "Time out"
+            if type(r) == float:
+                r = "Good"
+            elif r == False:
+                r = "No Response"
+            else:
+                r = "Time out"
 
-        added = f"{ip} | {r}"
+            added = f"{ip} | {r}"
 
-        print(added)
-        file.write(f"{added}\n")
+            print(added)
+            file.write(f"{added}\n")
 
 
 check = 0
